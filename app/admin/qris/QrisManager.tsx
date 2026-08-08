@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { updateQrisImage } from "../actions";
 import { showToast } from "@/components/ui/Toast";
@@ -15,28 +15,40 @@ export function QrisManager({ currentUrl }: QrisManagerProps) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const uploadingRef = useRef(false);
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = useCallback(async (file: File) => {
+    if (uploadingRef.current) return;
     if (!file.type.startsWith("image/")) {
       showToast("error", "File harus berupa gambar (PNG, JPG, WebP).");
       return;
     }
 
+    uploadingRef.current = true;
     setUploading(true);
+
     try {
       const result = await uploadToCloudinary(file);
-      await updateQrisImage(result.secure_url);
       setPreview(result.secure_url);
       showToast("success", "QRIS berhasil diupdate.");
+
+      try {
+        await updateQrisImage(result.secure_url);
+      } catch {
+        // revalidate error — image sudah terupload, ignore
+      }
     } catch (e: unknown) {
-      showToast("error", "Gagal upload: " + String(e));
+      showToast("error", "Gagal upload: " + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      uploadingRef.current = false;
+      setUploading(false);
     }
-    setUploading(false);
-  };
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) handleUpload(file);
+    e.target.value = "";
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -51,7 +63,6 @@ export function QrisManager({ currentUrl }: QrisManagerProps) {
       <div>
         <p className="text-[11px] uppercase tracking-[.15em] text-white/35 mb-3">QRIS Aktif</p>
         <div className="hairline rounded-2xl bg-panel overflow-hidden">
-          {/* Preview */}
           <div className="p-6 flex justify-center">
             {preview ? (
               <div className="relative group">
@@ -72,13 +83,12 @@ export function QrisManager({ currentUrl }: QrisManagerProps) {
             )}
           </div>
 
-          {/* Upload area */}
           <div className="px-6 pb-6">
             <div
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
-              onClick={() => inputRef.current?.click()}
+              onClick={() => !uploading && inputRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition ${
                 dragOver
                   ? "border-gold/40 bg-gold/5"
@@ -91,7 +101,7 @@ export function QrisManager({ currentUrl }: QrisManagerProps) {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Mengupload…
+                  Mengupload ke Cloudinary…
                 </div>
               ) : (
                 <>
