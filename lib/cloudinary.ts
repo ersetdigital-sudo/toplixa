@@ -1,4 +1,4 @@
-const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!;
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const UPLOAD_PRESET = "oos-shop-default";
 
 export interface CloudinaryUploadResult {
@@ -10,6 +10,10 @@ export interface CloudinaryUploadResult {
 }
 
 export async function uploadToCloudinary(file: File): Promise<CloudinaryUploadResult> {
+  if (!CLOUD_NAME) {
+    throw new Error("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME belum di-set di environment variables Vercel.");
+  }
+
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", UPLOAD_PRESET);
@@ -22,7 +26,7 @@ export async function uploadToCloudinary(file: File): Promise<CloudinaryUploadRe
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || "Gagal upload ke Cloudinary");
+    throw new Error(err.error?.message || `Cloudinary error ${res.status}`);
   }
 
   return res.json();
