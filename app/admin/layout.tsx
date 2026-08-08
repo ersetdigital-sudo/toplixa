@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { LogoMark } from "@/components/ui/LogoMark";
+import { createSupabaseClient } from "@/lib/supabase";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> },
@@ -13,8 +14,25 @@ const NAV = [
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
   const isLogin = pathname === "/admin/login";
+
+  useEffect(() => {
+    if (isLogin) return;
+    const supabase = createSupabaseClient();
+    supabase.auth.getUser().then(({ data }) => {
+      setEmail(data.user?.email ?? null);
+    });
+  }, [isLogin]);
+
+  const handleLogout = async () => {
+    const supabase = createSupabaseClient();
+    await supabase.auth.signOut();
+    router.push("/admin/login");
+    router.refresh();
+  };
 
   if (isLogin) {
     return <>{children}</>;
@@ -47,12 +65,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Link>
           ))}
         </nav>
-        <div className="px-4 py-3 border-t border-white/[0.04]">
-          <form action="/api/auth/signout" method="post">
-            <button type="submit" className="text-xs text-white/30 hover:text-white/60 transition">
-              Keluar
-            </button>
-          </form>
+        <div className="px-4 py-3 border-t border-white/[0.04] space-y-3">
+          {email && (
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-white/[0.06] flex items-center justify-center text-[11px] font-semibold text-white/50 shrink-0">
+                {email.charAt(0).toUpperCase()}
+              </div>
+              <p className="text-xs text-white/40 truncate">{email}</p>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-xs text-white/30 hover:text-red-400/80 transition w-full"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Keluar
+          </button>
         </div>
       </aside>
 
@@ -63,16 +96,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <LogoMark className="w-6 h-6 shrink-0" />
             <span className="font-display font-semibold text-sm tracking-tight text-white/90">Admin</span>
           </div>
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05] transition"
-          >
-            {mobileOpen ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          <div className="flex items-center gap-2">
+            {email && (
+              <span className="text-[11px] text-white/30 truncate max-w-[120px]">{email}</span>
             )}
-          </button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="w-9 h-9 flex items-center justify-center rounded-lg text-white/50 hover:text-white hover:bg-white/[0.05] transition"
+            >
+              {mobileOpen ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+              )}
+            </button>
+          </div>
         </header>
 
         {/* Mobile nav dropdown */}
@@ -93,12 +131,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {item.label}
               </Link>
             ))}
-            <div className="px-3 pt-2 border-t border-white/[0.04] mt-1">
-              <form action="/api/auth/signout" method="post">
-                <button type="submit" className="text-xs text-white/30 hover:text-white/60 transition">
-                  Keluar
-                </button>
-              </form>
+            <div className="px-3 pt-2 border-t border-white/[0.04] mt-1 space-y-2">
+              {email && (
+                <div className="flex items-center gap-2 px-1">
+                  <div className="w-6 h-6 rounded-full bg-white/[0.06] flex items-center justify-center text-[10px] font-semibold text-white/50 shrink-0">
+                    {email.charAt(0).toUpperCase()}
+                  </div>
+                  <p className="text-[11px] text-white/35 truncate">{email}</p>
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-xs text-white/30 hover:text-red-400/80 transition w-full px-1"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Keluar
+              </button>
             </div>
           </nav>
         )}

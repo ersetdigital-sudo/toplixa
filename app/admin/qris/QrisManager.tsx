@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { createSupabaseClient } from "@/lib/supabase";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 import { updateQrisImage } from "../actions";
 import { showToast } from "@/components/ui/Toast";
 import { ToastContainer } from "@/components/ui/Toast";
@@ -24,19 +24,9 @@ export function QrisManager({ currentUrl }: QrisManagerProps) {
 
     setUploading(true);
     try {
-      const supabase = createSupabaseClient();
-      const ext = file.name.split(".").pop() ?? "png";
-      const path = `qris/qris-${Date.now()}.${ext}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("admin")
-        .upload(path, file, { contentType: file.type });
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage.from("admin").getPublicUrl(path);
-      await updateQrisImage(urlData.publicUrl);
-      setPreview(urlData.publicUrl);
+      const result = await uploadToCloudinary(file);
+      await updateQrisImage(result.secure_url);
+      setPreview(result.secure_url);
       showToast("success", "QRIS berhasil diupdate.");
     } catch (e: unknown) {
       showToast("error", "Gagal upload: " + String(e));
