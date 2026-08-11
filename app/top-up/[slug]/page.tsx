@@ -185,7 +185,10 @@ export default async function TopUpPage({ params }: PageProps) {
           </div>
         </section>
       </main>
-      <Footer />
+      {/* Footer hidden on mobile — detail page uses sticky CTA instead */}
+      <div className="hidden lg:block">
+        <Footer />
+      </div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(crumbs)) }}
