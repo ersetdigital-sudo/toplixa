@@ -99,23 +99,23 @@ export default async function TopUpPage({ params }: PageProps) {
         </section>
 
         {/* ===== MOBILE (< lg) — Hot Pot Product Detail style ===== */}
-        <section className="lg:hidden pb-24">
+        <section className="lg:hidden">
           {/* Hero: game icon with gradient overlay */}
-          <div className="relative h-72 bg-gradient-to-b from-[#1a1508] to-[#070707] overflow-hidden">
+          <div className="relative h-56 sm:h-64 bg-gradient-to-b from-[#1a1508] to-[#070707] overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src={game.icon_url}
                 alt={game.name}
-                width={160}
-                height={160}
-                className="w-40 h-40 object-contain drop-shadow-2xl"
+                width={140}
+                height={140}
+                className="w-32 h-32 sm:w-36 sm:h-36 object-contain drop-shadow-2xl"
                 priority
               />
             </div>
             {/* Gradient overlay at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0c0c0d] to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0c0c0d] to-transparent" />
             {/* Back button */}
-            <div className="absolute top-12 left-4 right-4 flex items-center justify-between z-10">
+            <div className="absolute top-10 left-4 right-4 flex items-center justify-between z-10">
               <Link
                 href="/"
                 className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition"
@@ -129,21 +129,21 @@ export default async function TopUpPage({ params }: PageProps) {
           </div>
 
           {/* Content card — overlapping hero */}
-          <div className="relative -mt-6 bg-[#0c0c0d] rounded-t-3xl px-5 pt-6 pb-8">
+          <div className="relative -mt-5 bg-[#0c0c0d] rounded-t-3xl px-4 sm:px-5 pt-5 pb-28">
             {/* Title + Price */}
-            <h1 className="text-white font-bold text-2xl">{game.name}</h1>
-            <p className="text-[#d4af6a] font-semibold text-lg mt-1">{game.range_label}</p>
+            <h1 className="text-white font-bold text-xl sm:text-2xl">{game.name}</h1>
+            <p className="text-[#d4af6a] font-semibold text-base sm:text-lg mt-1">{game.range_label}</p>
 
             {/* Description */}
-            <p className="text-white/50 text-sm mt-4 leading-relaxed">
+            <p className="text-white/50 text-sm mt-3 sm:mt-4 leading-relaxed">
               Tidak perlu password atau kode OTP. Cukup masukkan {game.user_id_label}{!game.hide_server_id && game.server_id_required ? ` & ${game.server_id_label}` : ""}, pilih nominal, dan bayar.
             </p>
 
             {/* Divider */}
-            <div className="border-t border-white/5 my-5" />
+            <div className="border-t border-white/5 my-4" />
 
             {/* Benefits */}
-            <div className="space-y-3 mb-5">
+            <div className="space-y-2.5 mb-4">
               <div className="flex items-center gap-3 text-white/60 text-sm">
                 <span className="text-[#d4af6a]">✓</span> Proses otomatis 24 jam nonstop
               </div>
@@ -156,7 +156,7 @@ export default async function TopUpPage({ params }: PageProps) {
             </div>
 
             {/* Divider */}
-            <div className="border-t border-white/5 my-5" />
+            <div className="border-t border-white/5 my-4" />
 
             {/* Order Form */}
             <GameOrderForm game={game} qrisUrl={qrisUrl} whatsappNumber={whatsappNumber} />
