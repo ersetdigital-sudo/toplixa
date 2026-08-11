@@ -163,7 +163,7 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
           <span className="block text-xs uppercase tracking-[.15em] text-white/40 mb-3">
             Nominal <span className="text-red-400">*</span>
           </span>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3" role="radiogroup" aria-label="Pilih nominal">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3" role="radiogroup" aria-label="Pilih nominal">
             {nominals.map((nom) => {
               const active = pickedLabel === nom.nominal_label;
               return (
