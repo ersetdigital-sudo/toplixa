@@ -130,6 +130,9 @@ export default async function TopUpPage({ params }: PageProps) {
 
           {/* Content card — overlapping hero */}
           <div className="relative -mt-5 bg-[#0c0c0d] rounded-t-3xl px-4 sm:px-5 pt-5 pb-28">
+            {/* Breadcrumb */}
+            <Breadcrumb items={crumbs} className="mb-4" />
+
             {/* Title + Price */}
             <h1 className="text-white font-bold text-xl sm:text-2xl">{game.name}</h1>
             <p className="text-[#d4af6a] font-semibold text-base sm:text-lg mt-1">{game.range_label}</p>
