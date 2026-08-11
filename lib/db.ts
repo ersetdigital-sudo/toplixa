@@ -94,3 +94,20 @@ export async function getQrisUrl(): Promise<string> {
     .single() as { data: SettingsRow | null };
   return (data?.value as string) ?? "";
 }
+
+export async function getWhatsAppNumber(): Promise<string> {
+  const supabase = await createSupabaseServerClient();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data } = await (supabase.from("settings") as any)
+    .select("value")
+    .eq("key", "whatsapp_number")
+    .single() as { data: SettingsRow | null };
+
+  if (!data?.value) return "6281234567890";
+  try {
+    const parsed = JSON.parse(String(data.value));
+    return String(parsed);
+  } catch {
+    return String(data.value).replace(/"/g, "");
+  }
+}
