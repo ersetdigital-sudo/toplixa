@@ -155,3 +155,69 @@ export async function updateWhatsAppNumber(number: string) {
   if (error) return { success: false, error: error.message };
   return { success: true };
 }
+
+// ===== Order Actions =====
+
+export interface CreateOrderInput {
+  orderId: string;
+  gameName: string;
+  gameSlug: string;
+  userId: string;
+  serverId?: string;
+  nominalLabel: string;
+  price: number;
+  uniqueCode: number;
+  total: number;
+}
+
+export async function createOrder(input: CreateOrderInput) {
+  const supabase = await createSupabaseServerClient();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase.from("orders") as any).insert({
+    order_id: input.orderId,
+    game_name: input.gameName,
+    game_slug: input.gameSlug,
+    user_id: input.userId,
+    server_id: input.serverId || "-",
+    nominal_label: input.nominalLabel,
+    price: input.price,
+    unique_code: input.uniqueCode,
+    total: input.total,
+    status: "pending",
+  });
+
+  if (error) {
+    console.error("Failed to create order:", error);
+    return { success: false, error: error.message };
+  }
+  return { success: true };
+}
+
+export async function updateOrderStatus(
+  orderId: string,
+  status: "pending" | "confirmed" | "failed"
+) {
+  const supabase = await requireAdmin();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase.from("orders") as any)
+    .update({ status })
+    .eq("order_id", orderId);
+
+  if (error) return { success: false, error: error.message };
+  revalidatePath("/admin/orders");
+  return { success: true };
+}
+
+export async function markWhatsAppSent(orderId: string) {
+  const supabase = await createSupabaseServerClient();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase.from("orders") as any)
+    .update({ whatsapp_sent: true })
+    .eq("order_id", orderId);
+
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+}

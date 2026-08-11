@@ -4,9 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { drawDemoQR } from "@/lib/qr";
 import { rupiah } from "@/lib/format";
 import { buildWhatsAppUrl, buildOrderMessage } from "@/lib/whatsapp";
+import { createOrder } from "@/app/admin/actions";
 
 export interface CheckoutOrder {
   game: string;
+  gameSlug: string;
   userId: string;
   serverId: string;
   nominalLabel: string;
@@ -163,7 +165,7 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                 <div className="border-t border-white/5 pt-2 flex justify-between items-center"><span className="text-white/40">Total</span><span className="font-display text-lg font-semibold gold-text">{rupiah(order.total)}</span></div>
               </div>
 
-              <button type="button" onClick={() => { const message = buildOrderMessage({ gameName: order.game, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, orderId: order.orderId, total: order.total }); window.open(buildWhatsAppUrl(whatsappNumber, message), "_blank"); setStep("done"); }} className="w-full bg-[#d4af6a] text-black font-semibold py-3 rounded-xl hover:bg-[#e7cf9c] transition mt-4">
+              <button type="button" onClick={async () => { await createOrder({ orderId: order.orderId, gameName: order.game, gameSlug: order.gameSlug, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, uniqueCode: order.total - order.price, total: order.total }); const message = buildOrderMessage({ gameName: order.game, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, orderId: order.orderId, total: order.total }); window.open(buildWhatsAppUrl(whatsappNumber, message), "_blank"); setStep("done"); }} className="w-full bg-[#d4af6a] text-black font-semibold py-3 rounded-xl hover:bg-[#e7cf9c] transition mt-4">
                 Konfirmasi Pembayaran
               </button>
               <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-2">Batalkan pesanan</button>
@@ -229,7 +231,7 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <div className="border-t border-white/5 pt-2 flex justify-between items-center"><span className="text-white/40">Total</span><span className="font-display text-xl font-semibold gold-text">{rupiah(order.total)}</span></div>
                 </div>
 
-                <button type="button" onClick={() => { const message = buildOrderMessage({ gameName: order.game, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, orderId: order.orderId, total: order.total }); window.open(buildWhatsAppUrl(whatsappNumber, message), "_blank"); setStep("done"); }} className="w-full bg-[#d4af6a] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e7cf9c] transition mt-4">
+                <button type="button" onClick={async () => { await createOrder({ orderId: order.orderId, gameName: order.game, gameSlug: order.gameSlug, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, uniqueCode: order.total - order.price, total: order.total }); const message = buildOrderMessage({ gameName: order.game, userId: order.userId, serverId: order.serverId, nominalLabel: order.nominalLabel, price: order.price, orderId: order.orderId, total: order.total }); window.open(buildWhatsAppUrl(whatsappNumber, message), "_blank"); setStep("done"); }} className="w-full bg-[#d4af6a] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e7cf9c] transition mt-4">
                   Konfirmasi Pembayaran
                 </button>
                 <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-2">Batalkan pesanan</button>

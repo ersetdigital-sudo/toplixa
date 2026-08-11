@@ -81,6 +81,7 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
     const uniqueCode = Math.floor(Math.random() * 400 + 100);
     setOrder({
       game: game.name,
+      gameSlug: game.slug,
       userId: userId.trim(),
       serverId: showServerField ? serverId.trim() : "—",
       nominalLabel: nominal.nominal_label,
