@@ -110,7 +110,7 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
       style={{ display: step === "done" || step === "expired" ? undefined : "block" }}
     >
       <div className="absolute inset-0 bg-[rgba(3,3,4,.82)] backdrop-blur-[14px]" onClick={onClose} />
-      <div className="relative max-w-[440px] mx-auto h-full overflow-y-auto py-6 px-4 flex items-start sm:items-center">
+      <div className="relative max-w-[420px] mx-auto h-full overflow-y-auto py-4 px-4 sm:py-6 flex items-start sm:items-center">
         <div className="pay-card" style={{ borderRadius: 26 }}>
           {step === "pay" && (
             <div>
@@ -162,17 +162,17 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <img
                     src={order.qrisUrl}
                     alt="QRIS Toplixa"
-                    width={190}
-                    height={190}
-                    style={{ width: "min(58vw, 190px)", height: "auto", borderRadius: 6, objectFit: "contain" }}
+                    width={140}
+                    height={140}
+                    className="w-[min(45vw,140px)] h-auto rounded-md object-contain"
                   />
                 ) : (
-                  <canvas ref={canvasRef} width={180} height={180} style={{ width: "min(58vw, 190px)", height: "min(58vw, 190px)", imageRendering: "pixelated", borderRadius: 6 }} />
+                  <canvas ref={canvasRef} width={140} height={140} className="w-[min(45vw,140px)] h-[min(45vw,140px)] rounded-md" style={{ imageRendering: "pixelated" }} />
                 )}
                 <p className="text-[10px] text-[#0b0b0c]/55 pb-1">Satu QR untuk semua e-wallet &amp; m-banking</p>
               </div>
 
-              <div className="mt-5 space-y-2.5 text-sm">
+              <div className="mt-4 space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-white/40">Game</span>
                   <span className="text-white/85">{order.game}</span>
@@ -195,9 +195,9 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <span className="text-white/40">Order ID</span>
                   <span className="text-white/60 text-xs font-mono">{order.orderId}</span>
                 </div>
-                <div className="border-t border-white/5 pt-3 flex justify-between items-center">
+                <div className="border-t border-white/5 pt-2.5 flex justify-between items-center">
                   <span className="text-white/40">Total</span>
-                  <span className="font-display text-xl font-semibold gold-text">{rupiah(order.total)}</span>
+                  <span className="font-display text-lg font-semibold gold-text">{rupiah(order.total)}</span>
                 </div>
               </div>
 

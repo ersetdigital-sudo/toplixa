@@ -52,8 +52,53 @@ export default async function TopUpPage({ params }: PageProps) {
     <>
       <Header />
       <main className="flex-1">
-        <div className="min-h-screen bg-[#070707]">
-          {/* Mobile header */}
+        {/* ===== DESKTOP (lg+) ===== */}
+        <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 hidden lg:block">
+          <div className="glow" style={{ width: 420, height: 420, background: "#d4af6a", top: "10%", left: -140, opacity: 0.18 }} />
+          <div className="relative max-w-5xl mx-auto px-5 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-16 items-start">
+            <div>
+              <Breadcrumb items={crumbs} className="mb-4" />
+              <p className="text-[11px] tracking-[.25em] uppercase text-white/40">Top Up</p>
+              <h1 className="mt-3 font-display h-sec font-semibold">
+                {game.name}
+                <br />
+                <span className="gold-text">{game.range_label}</span>
+              </h1>
+              <p className="mt-5 text-white/50 text-sm font-light max-w-sm">
+                Tidak perlu password atau kode OTP. Cukup {game.user_id_label}{!game.hide_server_id && game.server_id_required ? ` & ${game.server_id_label}` : ""}.
+              </p>
+              <ul className="mt-8 space-y-3 text-sm text-white/60">
+                <li className="flex gap-3">
+                  <span className="text-gold shrink-0">✓</span> Proses otomatis 24 jam nonstop
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gold shrink-0">✓</span> QRIS, e-wallet, VA, dan minimarket
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gold shrink-0">✓</span> Garansi uang kembali bila gagal
+                </li>
+              </ul>
+
+              <div className="mt-8">
+                <div className="logo-wrap !h-auto justify-start">
+                  <Image
+                    src={game.icon_url}
+                    alt={`Logo ${game.name}`}
+                    width={game.icon_width}
+                    height={game.icon_height}
+                    className="w-auto h-auto"
+                    sizes="120px"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <GameOrderForm game={game} qrisUrl={qrisUrl} whatsappNumber={whatsappNumber} />
+          </div>
+        </section>
+
+        {/* ===== MOBILE (< lg) ===== */}
+        <section className="lg:hidden">
           <div className="relative bg-gradient-to-b from-[#1a1508] to-[#070707] px-5 pt-6 pb-8">
             <div className="flex items-center gap-3 mb-4">
               <Link href="/" className="text-white/50 hover:text-white transition">
@@ -61,7 +106,6 @@ export default async function TopUpPage({ params }: PageProps) {
               </Link>
               <h1 className="text-white font-bold text-lg">{game.name}</h1>
             </div>
-            {/* Game icon */}
             <div className="flex justify-center mb-4">
               <Image
                 src={game.icon_url}
@@ -74,7 +118,6 @@ export default async function TopUpPage({ params }: PageProps) {
             <p className="text-white/50 text-sm text-center">{game.range_label}</p>
           </div>
 
-          {/* Benefits */}
           <div className="px-5 py-6 space-y-3">
             <div className="flex items-center gap-3 text-white/60 text-sm">
               <span className="text-[#d4af6a]">✓</span> Proses otomatis 24 jam
@@ -87,11 +130,10 @@ export default async function TopUpPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Order Form */}
           <div className="px-5">
             <GameOrderForm game={game} qrisUrl={qrisUrl} whatsappNumber={whatsappNumber} />
           </div>
-        </div>
+        </section>
 
         <section className="sect border-t border-white/5">
           <div className="max-w-4xl mx-auto px-5 text-center relative">
