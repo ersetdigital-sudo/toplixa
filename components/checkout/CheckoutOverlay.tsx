@@ -129,8 +129,8 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                 </button>
               </div>
 
-              <div className="mt-5 flex items-center gap-3 hairline rounded-2xl px-4 py-3 bg-[#0f0f11]">
-                <svg className="timer-ring" viewBox="0 0 44 44" aria-hidden="true">
+              <div className="mt-4 flex items-center gap-3 hairline rounded-2xl px-4 py-3 bg-[#0f0f11]">
+                <svg className="timer-ring shrink-0" viewBox="0 0 44 44" aria-hidden="true">
                   <circle cx="22" cy="22" r="19" stroke="rgba(255,255,255,.09)" />
                   <circle
                     cx="22"
@@ -141,18 +141,18 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                     strokeDashoffset={String(ringOffset)}
                   />
                 </svg>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="text-[11px] text-white/40 uppercase tracking-[.15em]">Bayar dalam</p>
                   <p className={`font-display text-xl font-semibold ${low ? "text-red-400" : "gold-text"}`}>
                     {mm}:{ss}
                   </p>
                 </div>
-                <span className="flex items-center gap-2 text-[11px] text-emerald-300/80">
+                <span className="flex items-center gap-2 text-[11px] text-emerald-300/80 shrink-0">
                   <span className="pulse-dot" /> Menunggu
                 </span>
               </div>
 
-              <div className="mt-5 relative" style={{ background: "#fff", borderRadius: 18, padding: 14, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div className="mt-4 relative bg-white rounded-2xl p-3 flex flex-col items-center gap-2">
                 <div className="flex items-center gap-2 self-start">
                   <span className="font-display text-[13px] font-bold tracking-tight text-[#0b0b0c]">QRIS</span>
                   <span className="text-[9px] text-[#0b0b0c]/50 uppercase tracking-[.18em]">Toplixa</span>
@@ -162,17 +162,17 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <img
                     src={order.qrisUrl}
                     alt="QRIS Toplixa"
-                    width={140}
-                    height={140}
-                    className="w-[min(45vw,140px)] h-auto rounded-md object-contain"
+                    width={130}
+                    height={130}
+                    className="w-[min(40vw,130px)] h-auto rounded-md object-contain"
                   />
                 ) : (
-                  <canvas ref={canvasRef} width={140} height={140} className="w-[min(45vw,140px)] h-[min(45vw,140px)] rounded-md" style={{ imageRendering: "pixelated" }} />
+                  <canvas ref={canvasRef} width={130} height={130} className="w-[min(40vw,130px)] h-[min(40vw,130px)] rounded-md" style={{ imageRendering: "pixelated" }} />
                 )}
-                <p className="text-[10px] text-[#0b0b0c]/55 pb-1">Satu QR untuk semua e-wallet &amp; m-banking</p>
+                <p className="text-[10px] text-[#0b0b0c]/55">Satu QR untuk semua e-wallet &amp; m-banking</p>
               </div>
 
-              <div className="mt-4 space-y-2 text-sm">
+              <div className="mt-4 space-y-1.5 text-sm">
                 <div className="flex justify-between">
                   <span className="text-white/40">Game</span>
                   <span className="text-white/85">{order.game}</span>
@@ -195,7 +195,7 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <span className="text-white/40">Order ID</span>
                   <span className="text-white/60 text-xs font-mono">{order.orderId}</span>
                 </div>
-                <div className="border-t border-white/5 pt-2.5 flex justify-between items-center">
+                <div className="border-t border-white/5 pt-2 flex justify-between items-center">
                   <span className="text-white/40">Total</span>
                   <span className="font-display text-lg font-semibold gold-text">{rupiah(order.total)}</span>
                 </div>
@@ -217,11 +217,11 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   window.open(url, "_blank");
                   setStep("done");
                 }}
-                className="w-full bg-[#d4af6a] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e7cf9c] transition"
+                className="w-full bg-[#d4af6a] text-black font-semibold py-3 rounded-xl hover:bg-[#e7cf9c] transition mt-4"
               >
                 Konfirmasi Pembayaran
               </button>
-              <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-3">
+              <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-2">
                 Batalkan pesanan
               </button>
             </div>
@@ -237,17 +237,17 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                 />
               ))}
               <div
-                className="check-pop mx-auto w-20 h-20 rounded-full flex items-center justify-center"
+                className="check-pop mx-auto w-16 h-16 rounded-full flex items-center justify-center"
                 style={{ background: "radial-gradient(circle at 50% 35%,rgba(52,211,153,.22),rgba(52,211,153,.05))", border: "1px solid rgba(52,211,153,.35)" }}
               >
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 6 9 17l-5-5" />
                 </svg>
               </div>
-              <h3 className="font-display text-2xl font-semibold mt-6">Pembayaran berhasil</h3>
+              <h3 className="font-display text-xl font-semibold mt-4">Pembayaran berhasil</h3>
               <p className="text-white/50 text-sm font-light mt-2">Terima kasih! Item sedang dikirim ke akunmu.</p>
 
-              <div className="mt-6 hairline rounded-2xl p-4 text-left space-y-2.5 text-sm bg-[#0f0f11]">
+              <div className="mt-4 hairline rounded-2xl p-3 text-left space-y-2 text-sm bg-[#0f0f11]">
                 <div className="flex justify-between">
                   <span className="text-white/40">Order ID</span>
                   <span className="text-white/70 text-xs font-mono">{order.orderId}</span>
@@ -264,17 +264,17 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   <span className="text-white/40">Paket</span>
                   <span className="text-white/85">{order.nominalLabel}</span>
                 </div>
-                <div className="border-t border-white/5 pt-2.5 flex justify-between">
+                <div className="border-t border-white/5 pt-2 flex justify-between">
                   <span className="text-white/40">Dibayar</span>
                   <span className="gold-text font-display font-semibold">{rupiah(order.total)}</span>
                 </div>
               </div>
 
-              <div className="mt-5 flex items-center justify-center gap-2 text-xs text-emerald-300/80">
+              <div className="mt-4 flex items-center justify-center gap-2 text-xs text-emerald-300/80">
                 <span className="pulse-dot" /> {deliverMsg}
               </div>
 
-              <button type="button" onClick={onClose} className="btn-gold w-full font-semibold py-3.5 rounded-xl mt-6 transition">
+              <button type="button" onClick={onClose} className="btn-gold w-full font-semibold py-3 rounded-xl mt-5 transition">
                 Selesai
               </button>
               <button
@@ -283,7 +283,7 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                   onClose();
                   window.location.hash = "#topup";
                 }}
-                className="w-full text-xs text-white/35 hover:text-white/70 transition mt-3"
+                className="w-full text-xs text-white/35 hover:text-white/70 transition mt-2"
               >
                 Top up lagi
               </button>
@@ -293,20 +293,20 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
           {step === "expired" && (
             <div className="text-center py-2">
               <div
-                className="mx-auto w-20 h-20 rounded-full flex items-center justify-center"
+                className="mx-auto w-16 h-16 rounded-full flex items-center justify-center"
                 style={{ border: "1px solid rgba(255,255,255,.12)", background: "rgba(255,255,255,.03)" }}
               >
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9a9a9f" strokeWidth="2" strokeLinecap="round">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9a9a9f" strokeWidth="2" strokeLinecap="round">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 7v5l3 2" />
                 </svg>
               </div>
-              <h3 className="font-display text-2xl font-semibold mt-6">Waktu habis</h3>
+              <h3 className="font-display text-xl font-semibold mt-4">Waktu habis</h3>
               <p className="text-white/50 text-sm font-light mt-2">QRIS sudah kedaluwarsa. Buat pesanan baru untuk melanjutkan.</p>
-              <button type="button" onClick={handleRetry} className="btn-gold w-full font-semibold py-3.5 rounded-xl mt-6 transition">
+              <button type="button" onClick={handleRetry} className="btn-gold w-full font-semibold py-3 rounded-xl mt-5 transition">
                 Buat QRIS Baru
               </button>
-              <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-3">
+              <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-2">
                 Tutup
               </button>
             </div>
