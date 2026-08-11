@@ -52,7 +52,7 @@ export default async function TopUpPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden">
         {/* ===== DESKTOP (lg+) ===== */}
         <section className="relative overflow-hidden pt-28 pb-16 md:pt-36 md:pb-24 hidden lg:block">
           <div className="glow" style={{ width: 420, height: 420, background: "#d4af6a", top: "10%", left: -140, opacity: 0.18 }} />
@@ -99,9 +99,9 @@ export default async function TopUpPage({ params }: PageProps) {
         </section>
 
         {/* ===== MOBILE (< lg) — Hot Pot Product Detail style ===== */}
-        <section className="lg:hidden">
+        <section className="lg:hidden overflow-x-hidden">
           {/* Hero: game icon with gradient overlay */}
-          <div className="relative h-56 sm:h-64 bg-gradient-to-b from-[#1a1508] to-[#070707] overflow-hidden">
+          <div className="relative h-56 sm:h-64 bg-gradient-to-b from-[#1a1508] to-[#070707]">
             <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src={game.icon_url}
@@ -114,8 +114,8 @@ export default async function TopUpPage({ params }: PageProps) {
             </div>
             {/* Gradient overlay at bottom */}
             <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#0c0c0d] to-transparent" />
-            {/* Back button */}
-            <div className="absolute top-10 left-4 right-4 flex items-center justify-between z-10">
+            {/* Back button — below header (h-16 = 64px) */}
+            <div className="absolute top-20 left-4 right-4 flex items-center justify-between z-10">
               <Link
                 href="/"
                 className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition"
@@ -124,12 +124,12 @@ export default async function TopUpPage({ params }: PageProps) {
                   <path d="m15 18-6-6 6-6" />
                 </svg>
               </Link>
-              <div className="w-10" /> {/* Spacer for centering */}
+              <div className="w-10" /> {/* Spacer */}
             </div>
           </div>
 
           {/* Content card — overlapping hero */}
-          <div className="relative -mt-5 bg-[#0c0c0d] rounded-t-3xl px-4 sm:px-5 pt-5 pb-28">
+          <div className="relative -mt-5 bg-[#0c0c0d] rounded-t-3xl px-4 sm:px-5 pt-5 pb-28 max-w-full">
             {/* Breadcrumb */}
             <Breadcrumb items={crumbs} className="mb-4" />
 
