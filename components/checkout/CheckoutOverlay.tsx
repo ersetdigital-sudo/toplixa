@@ -152,23 +152,23 @@ export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOver
                 </span>
               </div>
 
-              <div className="mt-4 relative bg-white rounded-2xl p-3 flex flex-col items-center gap-2">
+              <div className="mt-4 relative bg-white rounded-2xl p-3 flex flex-col items-center gap-2 overflow-hidden">
                 <div className="flex items-center gap-2 self-start">
                   <span className="font-display text-[13px] font-bold tracking-tight text-[#0b0b0c]">QRIS</span>
                   <span className="text-[9px] text-[#0b0b0c]/50 uppercase tracking-[.18em]">Toplixa</span>
                 </div>
-                {order.qrisUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={order.qrisUrl}
-                    alt="QRIS Toplixa"
-                    width={130}
-                    height={130}
-                    className="w-[min(40vw,130px)] h-auto rounded-md object-contain"
-                  />
-                ) : (
-                  <canvas ref={canvasRef} width={130} height={130} className="w-[min(40vw,130px)] h-[min(40vw,130px)] rounded-md" style={{ imageRendering: "pixelated" }} />
-                )}
+                <div className="w-full max-w-[120px] aspect-square flex items-center justify-center">
+                  {order.qrisUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={order.qrisUrl}
+                      alt="QRIS Toplixa"
+                      className="w-full h-full rounded-md object-contain"
+                    />
+                  ) : (
+                    <canvas ref={canvasRef} width={120} height={120} className="w-full h-full rounded-md" style={{ imageRendering: "pixelated" }} />
+                  )}
+                </div>
                 <p className="text-[10px] text-[#0b0b0c]/55">Satu QR untuk semua e-wallet &amp; m-banking</p>
               </div>
 
