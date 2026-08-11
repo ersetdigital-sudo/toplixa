@@ -1,0 +1,31 @@
+# Toplixa
+
+Toplixa adalah layanan top up game instan, aman, dan murah untuk PUBG Mobile, Mobile Legends, Free Fire, Magic Chess Go Go, dan Call of Duty Mobile.
+
+## Info utama
+
+- Proses otomatis 24 jam, rata-rata di bawah 10 detik
+- Tanpa login akun game — cukup User ID dan Server ID
+- Pembayaran: QRIS, e-wallet (GoPay, OVO, DANA, ShopeePay), Virtual Account, dan minimarket
+- Garansi uang kembali 100% bila transaksi gagal
+
+## Game & produk
+
+- PUBG Mobile — UC 60 sampai 8100
+- Mobile Legends — Diamond 5 sampai 5000
+- Free Fire — Diamond 5 sampai 7290
+- Magic Chess Go Go — Diamond & Magic Pass
+- Call of Duty: Mobile — CP 80 sampai 10800
+
+## Cara order
+
+1. Masukkan User ID (dan Server ID bila diminta).
+2. Pilih nominal dan metode pembayaran.
+3. Item masuk otomatis, bukti transaksi dikirim ke email atau WhatsApp.
+
+## FAQ ringkas
+
+- Perlu login akun game? Tidak. Jangan berikan password atau OTP kepada siapa pun.
+- Berapa lama item masuk? Umumnya di bawah 10 detik setelah pembayaran terkonfirmasi.
+- Transaksi gagal? Dana dikembalikan 100% atau dijadikan saldo Toplixa.
+- Bisa request game lain? Bisa, hubungi CS kami.

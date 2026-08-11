@@ -7,6 +7,7 @@ import { Footer } from "@/components/sections/Footer";
 import { GameOrderForm } from "@/components/sections/GameOrderForm";
 import { Breadcrumb, breadcrumbJsonLd } from "@/components/ui/Breadcrumb";
 import { site } from "@/lib/site";
+import { gameJsonLd } from "@/lib/json-ld";
 import { getGameBySlug, getQrisUrl, getWhatsAppNumber } from "@/lib/db";
 import type { DbGameWithNominals } from "@/lib/db";
 
@@ -185,6 +186,10 @@ export default async function TopUpPage({ params }: PageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(crumbs)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(gameJsonLd(game)) }}
       />
     </>
   );
