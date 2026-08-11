@@ -7,7 +7,7 @@ import { Footer } from "@/components/sections/Footer";
 import { GameOrderForm } from "@/components/sections/GameOrderForm";
 import { Breadcrumb, breadcrumbJsonLd } from "@/components/ui/Breadcrumb";
 import { site } from "@/lib/site";
-import { getGameBySlug, getQrisUrl } from "@/lib/db";
+import { getGameBySlug, getQrisUrl, getWhatsAppNumber } from "@/lib/db";
 import type { DbGameWithNominals } from "@/lib/db";
 
 interface PageProps {
@@ -40,6 +40,7 @@ export default async function TopUpPage({ params }: PageProps) {
   if (!game) notFound();
 
   const qrisUrl = await getQrisUrl();
+  const whatsappNumber = await getWhatsAppNumber();
 
   const crumbs = [
     { label: "Home", href: "/" },
@@ -91,7 +92,7 @@ export default async function TopUpPage({ params }: PageProps) {
               </div>
             </div>
 
-            <GameOrderForm game={game} qrisUrl={qrisUrl} />
+            <GameOrderForm game={game} qrisUrl={qrisUrl} whatsappNumber={whatsappNumber} />
           </div>
         </section>
 

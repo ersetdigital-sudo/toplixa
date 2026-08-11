@@ -8,9 +8,10 @@ import type { DbGameWithNominals } from "@/lib/db";
 interface GameOrderFormProps {
   game: DbGameWithNominals;
   qrisUrl: string;
+  whatsappNumber: string;
 }
 
-export function GameOrderForm({ game, qrisUrl }: GameOrderFormProps) {
+export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormProps) {
   const [userId, setUserId] = useState("");
   const [serverId, setServerId] = useState("");
   const [pickedLabel, setPickedLabel] = useState<string | null>(null);
@@ -206,7 +207,7 @@ export function GameOrderForm({ game, qrisUrl }: GameOrderFormProps) {
         <p className="text-xs text-white/35 text-center">Harga final ditampilkan sebelum pembayaran.</p>
       </form>
 
-      {order && <CheckoutOverlay order={order} onClose={() => setOrder(null)} />}
+      {order && <CheckoutOverlay order={order} onClose={() => setOrder(null)} whatsappNumber={whatsappNumber} />}
     </>
   );
 }

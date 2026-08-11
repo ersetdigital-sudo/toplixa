@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { drawDemoQR } from "@/lib/qr";
 import { rupiah } from "@/lib/format";
+import { buildWhatsAppUrl, buildOrderMessage } from "@/lib/whatsapp";
 
 export interface CheckoutOrder {
   game: string;
@@ -18,6 +19,7 @@ export interface CheckoutOrder {
 interface CheckoutOverlayProps {
   order: CheckoutOrder;
   onClose: () => void;
+  whatsappNumber: string;
 }
 
 type Step = "pay" | "done" | "expired";
@@ -25,7 +27,7 @@ type Step = "pay" | "done" | "expired";
 const DURATION = 300;
 const RING_C = 119.4;
 
-export function CheckoutOverlay({ order, onClose }: CheckoutOverlayProps) {
+export function CheckoutOverlay({ order, onClose, whatsappNumber }: CheckoutOverlayProps) {
   const [step, setStep] = useState<Step>("pay");
   const [secondsLeft, setSecondsLeft] = useState(DURATION);
   const [deliverMsg, setDeliverMsg] = useState("Mengirim item… estimasi < 10 detik");
@@ -199,8 +201,25 @@ export function CheckoutOverlay({ order, onClose }: CheckoutOverlayProps) {
                 </div>
               </div>
 
-              <button type="button" onClick={handlePaid} className="btn-gold w-full font-semibold py-3.5 rounded-xl mt-5 transition">
-                Saya Sudah Bayar
+              <button
+                type="button"
+                onClick={() => {
+                  const message = buildOrderMessage({
+                    gameName: order.game,
+                    userId: order.userId,
+                    serverId: order.serverId,
+                    nominalLabel: order.nominalLabel,
+                    price: order.price,
+                    orderId: order.orderId,
+                    total: order.total,
+                  });
+                  const url = buildWhatsAppUrl(whatsappNumber, message);
+                  window.open(url, "_blank");
+                  setStep("done");
+                }}
+                className="w-full bg-[#d4af6a] text-black font-semibold py-3.5 rounded-xl hover:bg-[#e7cf9c] transition"
+              >
+                Konfirmasi Pembayaran
               </button>
               <button type="button" onClick={onClose} className="w-full text-xs text-white/35 hover:text-white/70 transition mt-3">
                 Batalkan pesanan
