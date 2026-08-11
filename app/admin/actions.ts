@@ -121,10 +121,37 @@ export async function updateGameActive(gameId: string, isActive: boolean) {
 
 export async function updateQrisImage(url: string) {
   const supabase = await requireAdmin();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await (supabase.from("settings") as any)
     .upsert({ key: "qris_image_url", value: url }, { onConflict: "key" });
   if (error) throw error.message;
   revalidatePath("/admin/qris");
   revalidatePath("/admin");
   revalidatePath("/");
+}
+
+export async function updateWhatsAppNumber(number: string) {
+  await requireAdmin();
+  const supabase = await createSupabaseServerClient();
+
+  const digits = number.replace(/\D/g, "");
+  if (digits.length < 10) {
+    return { success: false, error: "Nomor minimal 10 digit" };
+  }
+
+  const normalized = digits.startsWith("62")
+    ? digits
+    : digits.startsWith("0")
+    ? "62" + digits.slice(1)
+    : "62" + digits;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase.from("settings") as any)
+    .upsert(
+      { key: "whatsapp_number", value: JSON.stringify(normalized) },
+      { onConflict: "key" }
+    );
+
+  if (error) return { success: false, error: error.message };
+  return { success: true };
 }
