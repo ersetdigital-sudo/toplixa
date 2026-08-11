@@ -29,6 +29,8 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
   const isNominalValid = pickedLabel !== null;
   const isFormValid = isUserIdValid && isServerValid && isNominalValid;
 
+  const selectedNominal = nominals.find((n) => n.nominal_label === pickedLabel);
+
   const handleUserIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/[^0-9]/g, "");
     setUserId(val);
@@ -91,77 +93,64 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
 
   return (
     <>
-      <form id="orderForm" onSubmit={handleSubmit} className="hairline rounded-3xl p-5 sm:p-6 md:p-8 bg-[#0c0c0d]/80 backdrop-blur-xl space-y-5">
+      <form id="orderForm" onSubmit={handleSubmit} className="space-y-5">
+        {/* User ID */}
         <div>
-          <label htmlFor="gameSelect" className="block text-xs uppercase tracking-[.15em] text-white/40 mb-2">
-            Pilih game
+          <label htmlFor="userId" className="block text-xs uppercase tracking-[.15em] text-white/40 mb-2">
+            {game.user_id_label} <span className="text-red-400">*</span>
           </label>
-          <select
-            id="gameSelect"
-            value={game.slug}
-            disabled
-            className="w-full bg-raise hairline rounded-xl px-4 py-3 text-sm outline-none opacity-70 cursor-not-allowed"
-          >
-            <option>{game.name}</option>
-          </select>
-        </div>
-
-        <div className={showServerField ? "grid grid-cols-2 gap-4" : ""}>
-          <div>
-            <label htmlFor="userId" className="block text-xs uppercase tracking-[.15em] text-white/40 mb-2">
-              {game.user_id_label} <span className="text-red-400">*</span>
-            </label>
-            <input
-              id="userId"
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={userId}
-              onChange={handleUserIdChange}
-              onBlur={() => handleBlur("userId")}
-              placeholder={game.user_id_placeholder}
-              className={`w-full bg-raise hairline rounded-xl px-4 py-3 text-sm outline-none transition ${
-                errors.userId && touched.userId
-                  ? "border-red-400/60 focus:border-red-400"
-                  : "focus:border-gold/60"
-              }`}
-            />
-            {errors.userId && touched.userId && (
-              <p className="mt-1.5 text-xs text-red-400">{errors.userId}</p>
-            )}
-          </div>
-
-          {showServerField && (
-            <div>
-              <label htmlFor="serverId" className="block text-xs uppercase tracking-[.15em] text-white/40 mb-2">
-                {game.server_id_label} {serverRequired ? <span className="text-red-400">*</span> : <span className="text-white/25">(opsional)</span>}
-              </label>
-              <input
-                id="serverId"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={serverId}
-                onChange={handleServerIdChange}
-                onBlur={() => handleBlur("serverId")}
-                placeholder={game.server_id_placeholder}
-                required={serverRequired}
-                className={`w-full bg-raise hairline rounded-xl px-4 py-3 text-sm outline-none transition ${
-                  errors.serverId && touched.serverId
-                    ? "border-red-400/60 focus:border-red-400"
-                    : "focus:border-gold/60"
-                }`}
-              />
-              {errors.serverId && touched.serverId && (
-                <p className="mt-1.5 text-xs text-red-400">{errors.serverId}</p>
-              )}
-            </div>
+          <input
+            id="userId"
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={userId}
+            onChange={handleUserIdChange}
+            onBlur={() => handleBlur("userId")}
+            placeholder={game.user_id_placeholder}
+            className={`w-full bg-white/5 border rounded-xl px-4 py-3 text-sm text-white outline-none transition ${
+              errors.userId && touched.userId
+                ? "border-red-400/60 focus:border-red-400"
+                : "border-white/10 focus:border-[#d4af6a]/60"
+            }`}
+          />
+          {errors.userId && touched.userId && (
+            <p className="mt-1.5 text-xs text-red-400">{errors.userId}</p>
           )}
         </div>
 
+        {/* Server ID */}
+        {showServerField && (
+          <div>
+            <label htmlFor="serverId" className="block text-xs uppercase tracking-[.15em] text-white/40 mb-2">
+              {game.server_id_label} {serverRequired ? <span className="text-red-400">*</span> : <span className="text-white/25">(opsional)</span>}
+            </label>
+            <input
+              id="serverId"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={serverId}
+              onChange={handleServerIdChange}
+              onBlur={() => handleBlur("serverId")}
+              placeholder={game.server_id_placeholder}
+              required={serverRequired}
+              className={`w-full bg-white/5 border rounded-xl px-4 py-3 text-sm text-white outline-none transition ${
+                errors.serverId && touched.serverId
+                  ? "border-red-400/60 focus:border-red-400"
+                  : "border-white/10 focus:border-[#d4af6a]/60"
+              }`}
+            />
+            {errors.serverId && touched.serverId && (
+              <p className="mt-1.5 text-xs text-red-400">{errors.serverId}</p>
+            )}
+          </div>
+        )}
+
+        {/* Nominal */}
         <div>
           <span className="block text-xs uppercase tracking-[.15em] text-white/40 mb-3">
-            Nominal <span className="text-red-400">*</span>
+            Pilih Nominal <span className="text-red-400">*</span>
           </span>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3" role="radiogroup" aria-label="Pilih nominal">
             {nominals.map((nom) => {
@@ -176,14 +165,14 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
                     setPickedLabel(nom.nominal_label);
                     if (errors.nominal) setErrors((prev) => ({ ...prev, nominal: undefined }));
                   }}
-                  className={`hairline rounded-xl px-3 py-3 text-sm transition min-h-[44px] ${
+                  className={`border rounded-xl px-3 py-3 text-left transition min-h-[44px] ${
                     active
-                      ? "border-gold/80 bg-gold/10 text-white"
-                      : "text-white/75 hover:border-gold/60"
+                      ? "border-[#d4af6a]/80 bg-[#d4af6a]/10 text-white"
+                      : "border-white/10 bg-white/5 text-white/75 hover:border-white/20"
                   }`}
                 >
-                  {nom.nominal_label}
-                  <span className="block text-[11px] text-white/40">{rupiah(nom.price)}</span>
+                  <span className="text-sm font-medium block">{nom.nominal_label}</span>
+                  <span className="text-[11px] text-white/40">{rupiah(nom.price)}</span>
                 </button>
               );
             })}
@@ -193,19 +182,44 @@ export function GameOrderForm({ game, qrisUrl, whatsappNumber }: GameOrderFormPr
           )}
         </div>
 
+        {/* Desktop: inline button */}
+        <div className="hidden lg:block">
+          <button
+            type="submit"
+            disabled={!isFormValid}
+            className={`w-full font-semibold py-3.5 rounded-xl transition ${
+              isFormValid
+                ? "bg-[#d4af6a] text-black hover:bg-[#e7cf9c]"
+                : "bg-white/10 text-white/30 cursor-not-allowed"
+            }`}
+          >
+            Lanjut ke Pembayaran
+          </button>
+          <p className="text-xs text-white/35 text-center mt-2">Harga final ditampilkan sebelum pembayaran.</p>
+        </div>
+      </form>
+
+      {/* Mobile: sticky footer */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0c0c0d]/95 backdrop-blur-lg border-t border-white/5 px-5 py-4 safe-area-bottom">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-white/50 text-sm">Total</span>
+          <span className="text-[#d4af6a] font-display font-semibold text-lg">
+            {selectedNominal ? rupiah(selectedNominal.price) : "—"}
+          </span>
+        </div>
         <button
           type="submit"
+          form="orderForm"
           disabled={!isFormValid}
           className={`w-full font-semibold py-3.5 rounded-xl transition ${
             isFormValid
-              ? "btn-gold"
+              ? "bg-[#d4af6a] text-black hover:bg-[#e7cf9c]"
               : "bg-white/10 text-white/30 cursor-not-allowed"
           }`}
         >
           Lanjut ke Pembayaran
         </button>
-        <p className="text-xs text-white/35 text-center">Harga final ditampilkan sebelum pembayaran.</p>
-      </form>
+      </div>
 
       {order && <CheckoutOverlay order={order} onClose={() => setOrder(null)} whatsappNumber={whatsappNumber} />}
     </>

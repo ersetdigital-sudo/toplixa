@@ -97,40 +97,67 @@ export default async function TopUpPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* ===== MOBILE (< lg) ===== */}
-        <section className="lg:hidden">
-          <div className="relative bg-gradient-to-b from-[#1a1508] to-[#070707] px-5 pt-6 pb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <Link href="/" className="text-white/50 hover:text-white transition">
-                ←
-              </Link>
-              <h1 className="text-white font-bold text-lg">{game.name}</h1>
-            </div>
-            <div className="flex justify-center mb-4">
+        {/* ===== MOBILE (< lg) — Hot Pot Product Detail style ===== */}
+        <section className="lg:hidden pb-24">
+          {/* Hero: game icon with gradient overlay */}
+          <div className="relative h-72 bg-gradient-to-b from-[#1a1508] to-[#070707] overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center">
               <Image
                 src={game.icon_url}
                 alt={game.name}
-                width={80}
-                height={80}
-                className="rounded-2xl"
+                width={160}
+                height={160}
+                className="w-40 h-40 object-contain drop-shadow-2xl"
+                priority
               />
             </div>
-            <p className="text-white/50 text-sm text-center">{game.range_label}</p>
+            {/* Gradient overlay at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0c0c0d] to-transparent" />
+            {/* Back button */}
+            <div className="absolute top-12 left-4 right-4 flex items-center justify-between z-10">
+              <Link
+                href="/"
+                className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white hover:bg-white/20 transition"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </Link>
+              <div className="w-10" /> {/* Spacer for centering */}
+            </div>
           </div>
 
-          <div className="px-5 py-6 space-y-3">
-            <div className="flex items-center gap-3 text-white/60 text-sm">
-              <span className="text-[#d4af6a]">✓</span> Proses otomatis 24 jam
-            </div>
-            <div className="flex items-center gap-3 text-white/60 text-sm">
-              <span className="text-[#d4af6a]">✓</span> Bayar via QRIS, E-Wallet, VA
-            </div>
-            <div className="flex items-center gap-3 text-white/60 text-sm">
-              <span className="text-[#d4af6a]">✓</span> Garansi uang kembali
-            </div>
-          </div>
+          {/* Content card — overlapping hero */}
+          <div className="relative -mt-6 bg-[#0c0c0d] rounded-t-3xl px-5 pt-6 pb-8">
+            {/* Title + Price */}
+            <h1 className="text-white font-bold text-2xl">{game.name}</h1>
+            <p className="text-[#d4af6a] font-semibold text-lg mt-1">{game.range_label}</p>
 
-          <div className="px-5">
+            {/* Description */}
+            <p className="text-white/50 text-sm mt-4 leading-relaxed">
+              Tidak perlu password atau kode OTP. Cukup masukkan {game.user_id_label}{!game.hide_server_id && game.server_id_required ? ` & ${game.server_id_label}` : ""}, pilih nominal, dan bayar.
+            </p>
+
+            {/* Divider */}
+            <div className="border-t border-white/5 my-5" />
+
+            {/* Benefits */}
+            <div className="space-y-3 mb-5">
+              <div className="flex items-center gap-3 text-white/60 text-sm">
+                <span className="text-[#d4af6a]">✓</span> Proses otomatis 24 jam nonstop
+              </div>
+              <div className="flex items-center gap-3 text-white/60 text-sm">
+                <span className="text-[#d4af6a]">✓</span> QRIS, e-wallet, VA, minimarket
+              </div>
+              <div className="flex items-center gap-3 text-white/60 text-sm">
+                <span className="text-[#d4af6a]">✓</span> Garansi uang kembali bila gagal
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-white/5 my-5" />
+
+            {/* Order Form */}
             <GameOrderForm game={game} qrisUrl={qrisUrl} whatsappNumber={whatsappNumber} />
           </div>
         </section>
