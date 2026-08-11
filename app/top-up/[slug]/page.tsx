@@ -101,8 +101,8 @@ export default async function TopUpPage({ params }: PageProps) {
         {/* ===== MOBILE (< lg) — Hot Pot Product Detail style ===== */}
         <section className="lg:hidden overflow-x-hidden">
           {/* Hero: game icon with gradient overlay */}
-          <div className="relative h-56 sm:h-64 bg-gradient-to-b from-[#1a1508] to-[#070707]">
-            <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative h-64 sm:h-72 bg-gradient-to-b from-[#1a1508] to-[#070707]">
+            <div className="absolute inset-0 flex items-end justify-center pb-8">
               <Image
                 src={game.icon_url}
                 alt={game.name}
